@@ -1,4 +1,10 @@
 ﻿using API;
 
-Server server = new Server("phildick"); // Replace with your actual secret key
-server.Start();
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var server = new Server("phildick");
+        await server.StartAsync();
+    }
+}
