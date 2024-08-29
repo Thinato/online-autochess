@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace API;
 
-public class WebSocketServer
+public class Server
 {
     private readonly TokenService _tokenService;
 
-    public WebSocketServer(string secretKey)
+    public Server(string secretKey)
     {
         _tokenService = new TokenService(secretKey);
     }
@@ -19,9 +19,9 @@ public class WebSocketServer
     public async Task StartAsync()
     {
         HttpListener listener = new HttpListener();
-        listener.Prefixes.Add("http://localhost:5000/");
+        listener.Prefixes.Add("http://localhost:6969/");
         listener.Start();
-        Console.WriteLine("WebSocket server started at ws://localhost:5000/");
+        Console.WriteLine("WebSocket server started at ws://localhost:6969/");
 
         while (true)
         {
