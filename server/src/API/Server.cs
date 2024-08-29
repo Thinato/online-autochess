@@ -70,6 +70,8 @@ public class Server
         }
 
         string token = parts[0];
+        // review this later, maybe validate token all the time is not necessary
+        // since the connection with the given ip is already authenticated
         var playerId = _tokenService.ValidateToken(token);
 
         if (playerId == null)
