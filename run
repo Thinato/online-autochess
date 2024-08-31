@@ -12,6 +12,7 @@ tmux send-keys "dotnet run --project server/src/API/API.csproj" C-m
 
 tmux select-pane -t 1
 
+# definetly not the best way to do this
 sleep 2
 
 tmux send-keys "python3 client/src/main.py" C-m
