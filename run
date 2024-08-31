@@ -1,0 +1,19 @@
+#!/bin/bash
+
+session="game"
+
+tmux new-session -d -s $session
+
+tmux send-keys "source client/venv/bin/activate" C-m
+
+tmux split-window -h
+
+tmux send-keys "dotnet run --project server/src/API/API.csproj" C-m
+
+tmux select-pane -t 1
+
+sleep 2
+
+tmux send-keys "python3 client/src/main.py" C-m
+
+tmux attach

@@ -1,3 +1,4 @@
+
 game:
 	source ./client/venv/bin/activate && python3 ./client/src/main.py
 

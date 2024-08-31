@@ -6,10 +6,10 @@ class BaseScreen:
         self.screen = screen
         self.screen.fill((255, 255, 255))
         self.running = True
-        self.components = []
+        self.elements = []
 
     def update(self):
         pass
 
-    def draw(self):
+    def draw(self, dt):
         pass

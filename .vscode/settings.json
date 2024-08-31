@@ -1,0 +1,8 @@
+{
+  "python.defaultInterpreterPath": "~/repos/mmo-auto-battler/client/venv/bin/python3",
+  "python.autoComplete.extraPaths": ["./client/src"],
+  "python.analysis.extraPaths": ["./client/src"],
+  "files.exclude": {
+    "**/__pycache__": true
+  }
+}

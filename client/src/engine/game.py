@@ -1,16 +1,19 @@
 import pygame as pg
+from engine.base_sceen import BaseScreen
 
 class Game:
     playing = False
     window = None
     clock = None
-    def __init__(self) -> None:
+
+    def __init__(self, screens: dict[str, BaseScreen]):
         pass
 
     def start(self):
         self.playing = True
         self.window = pg.display.set_mode((800, 600))
         self.clock = pg.time.Clock()
+        self.screens = {}
         self.main_loop()
 
     def main_loop(self):
