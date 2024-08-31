@@ -1,14 +1,14 @@
 using System.Net;
 using System.Net.WebSockets;
-using System.Text;
 
 namespace API;
 
 public class Server {
-    private readonly TokenService _tokenService;
+    private readonly TokenService tokenService;
+    private readonly List<WebSocket> webSockets = new List<WebSocket>();
 
     public Server(string secretKey) {
-        _tokenService = new TokenService(secretKey);
+        tokenService = new TokenService(secretKey);
     }
 
     public async Task StartAsync() {
@@ -19,6 +19,7 @@ public class Server {
 
         while (true) {
             var context = await listener.GetContextAsync();
+
             if (context.Request.IsWebSocketRequest) {
                 var wsContext = await context.AcceptWebSocketAsync(null);
                 _ = HandleWebSocketConnection(wsContext.WebSocket);

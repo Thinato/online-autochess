@@ -12,3 +12,6 @@ class Button:
         self.width = width
         self.height = height
         self.text = text
+
+    def update(self):
+        pass
