@@ -1,15 +1,31 @@
 #!./venv/bin/python3
 
-from websocket import create_connection
+import json
 import pygame as pg
+import os
+
+from engine.config import Config
 from engine.game import Game
-import configparser as cp
-from screens.main_menu import MainMenu
+from scenes.main_menu import MainMenu
 
 
 if __name__ == "__main__":
     pg.init()
-    Game(screens={"main_menu": MainMenu()}).start()
+    pg.font.init()
+
+    config = Config()
+
+    if os.path.isfile(os.path.join("..", "config.json")):
+        with open(os.path.join("..", "config.json"), "r") as f:
+            config.parse(json.load(f))
+        f.close()
+    else:
+        config.default()
+        config.save()
+
+    Game(
+        screens={"main_menu": MainMenu()}, current_screen="main_menu", config=config
+    ).start()
 
 # config = cp.ConfigParser()
 
