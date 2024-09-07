@@ -15,17 +15,19 @@ if __name__ == "__main__":
 
     config = Config()
 
-    if os.path.isfile(os.path.join("..", "config.json")):
-        with open(os.path.join("..", "config.json"), "r") as f:
+    if os.path.isfile("config.json"):
+        with open("config.json", "r") as f:
             config.parse(json.load(f))
         f.close()
     else:
         config.default()
         config.save()
 
-    Game(
-        screens={"main_menu": MainMenu()}, current_screen="main_menu", config=config
-    ).start()
+    game = Game(config=config)
+
+    game.add_scene(MainMenu)
+    
+    game.start()
 
 # config = cp.ConfigParser()
 

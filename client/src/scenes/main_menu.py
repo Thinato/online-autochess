@@ -5,8 +5,9 @@ from collections import defaultdict
 
 
 class MainMenu(BaseScene):
-    def __init__(self):
-        super().__init__(pg.display.set_mode((800, 600)))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.name = 'main_menu'
         self.elements = [
             Button(1, self.screen, (100, 100), (100, 50), "Connect"),
             Button(2, self.screen, (100, 200), (100, 50), "Options"),
@@ -30,7 +31,7 @@ class MainMenu(BaseScene):
                 if element.hover:
                     match element.id:
                         case 1:
-                            print("Connect")
+                            self.ws.send("connect")
                         case 2:
                             print("Options")
                         case 3:

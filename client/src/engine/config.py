@@ -19,7 +19,7 @@ class Config:
         self.RESOLUTION = (800, 600)
 
     def save(self):
-        with open(os.path.join("", "config.json"), "w") as f:
+        with open("config.json", "w") as f:
             json.dump(
                 {
                     "server_url": self.SERVER_URL,
