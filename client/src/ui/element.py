@@ -9,6 +9,7 @@ class Element:
         pos: tuple[int, int],
         size: tuple[int, int],
         text: str,
+        font: pg.font.Font = None,
     ):
         self.id = idx
         self.x = pos[0]
@@ -18,6 +19,7 @@ class Element:
         self.text = text
         self.screen = screen
         self.hover = False
+        self.font = font or pg.font.Font(None, 32)
 
     def update(self, dt):
         pass

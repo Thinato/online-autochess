@@ -6,6 +6,7 @@ class Button(Element):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.hover = False
+        self.focus = False
         self.text = self.font.render(self.text, True, (255, 255, 255))
         self.text_pos = (
             self.x + (self.width - self.text.get_width()) // 2,
@@ -32,3 +33,6 @@ class Button(Element):
             self.hover = True
         else:
             self.hover = False
+
+    def remove_focus(self):
+        self.focus = False
