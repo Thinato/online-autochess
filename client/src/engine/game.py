@@ -2,24 +2,26 @@ import pygame as pg
 
 from engine.base_sceen import BaseScene
 from engine.config import Config
+from engine.connection import Connection
 from engine.scene_message import SceneMessage
 
 
 class Game:
-    playing = False
-    window = None
-    clock = None
-    ws = None
-    current_scene = None
+    playing: bool = False
+    window: pg.Surface
+    clock: pg.Clock
+    current_scene: str = None
+    conn: Connection
 
-    def __init__(self, config: Config):
+    def __init__(self, config: Config, conn: Connection):
         self.window = pg.display.set_mode((800, 600))
         self.screen = pg.Surface((800, 600))
         self.config = config
         self.scenes = {}
+        self.conn = conn
 
     def add_scene(self, scene: BaseScene, current: bool = False):
-        new_scene = scene(self.screen, self.ws, self.config)
+        new_scene = scene(self.screen, self.conn, self.config)
         if self.current_scene is None or current:
             self.current_scene = new_scene.name
         self.scenes[new_scene.name] = new_scene
@@ -37,20 +39,20 @@ class Game:
                 self.handle_event(event)
             self.update(dt)
 
-    def update(self, dt):
+    def update(self, dt: float):
         self.scenes[self.current_scene].update(dt)
         self.scenes[self.current_scene].draw()
         self.window.blit(self.screen, (0, 0))
 
         pg.display.flip()
 
-    def handle_event(self, event):
+    def handle_event(self, event: pg.Event):
         # this should be a separated class, but ¯\_(ツ)_/¯
         message = self.scenes[self.current_scene].handle_event(event)
 
         match message:
-            case SceneMessage.START_GAME:
-                print("Starting game")
+            case SceneMessage.BATTLEGROUND:
+                self.current_scene = "battleground"
             case SceneMessage.FAILED_TO_START_GAME:
                 print("Failed to start game")
             case SceneMessage.OPTIONS:
@@ -63,7 +65,7 @@ class Game:
 
     def stop(self):
         self.playing = False
-        if self.ws and self.ws.connected:
-            self.ws.close()
+        if self.conn.is_connected:
+            self.conn.close()
         pg.quit()
         exit()

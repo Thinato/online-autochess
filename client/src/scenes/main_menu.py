@@ -11,9 +11,9 @@ class MainMenu(BaseScene):
         super().__init__(*args, **kwargs)
         self.name = "main_menu"
         self.elements = [
-            Button(1, self.screen, (100, 100), (100, 50), "Connect"),
+            Button(1, self.screen, (100, 100), (100, 50), "Search Game"),
             Button(2, self.screen, (100, 200), (100, 50), "Options"),
-            Button(3, self.screen, (100, 300), (100, 50), "Exit"),
+            Button(3, self.screen, (100, 300), (100, 50), "Logout"),
         ]
 
     def update(self, dt):
@@ -34,16 +34,14 @@ class MainMenu(BaseScene):
                 if element.hover:
                     match element.id:
                         case 1:
-                            self.ws = create_connection(
-                                "ws://{}:{}".format(
-                                    self.config.SERVER_URL, self.config.SERVER_PORT
-                                )
+                            success = self.conn.connect(
+                                self.config.SERVER_URL, self.config.SERVER_PORT
                             )
-                            if self.ws.connected:
-                                return SceneMessage.START_GAME 
+
+                            if success:
+                                return SceneMessage.BATTLEGROUND
                             return SceneMessage.FAILED_TO_START_GAME
                         case 2:
-                            return SceneMessage.OPTIONS 
+                            return SceneMessage.OPTIONS
                         case 3:
                             return SceneMessage.EXIT
-        # return super().handle_event(event)

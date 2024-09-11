@@ -5,7 +5,9 @@ import pygame as pg
 import os
 
 from engine.config import Config
+from engine.connection import Connection
 from engine.game import Game
+from scenes.battleground import Battleground
 from scenes.main_menu import MainMenu
 
 
@@ -23,9 +25,12 @@ if __name__ == "__main__":
         config.default()
         config.save()
 
-    game = Game(config=config)
+    connection = Connection()
+
+    game = Game(config=config, conn=connection)
 
     game.add_scene(MainMenu)
+    game.add_scene(Battleground)
     
     game.start()
 

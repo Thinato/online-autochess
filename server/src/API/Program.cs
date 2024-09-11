@@ -4,12 +4,12 @@ using Fleck;
 public class Program {
     static void Main(string[] args) {
 
-        FleckLog.Level = LogLevel.Debug;
+        // FleckLog.Level = LogLevel.Debug;
         var allSockets = new List<IWebSocketConnection>();
         var server = new WebSocketServer("ws://127.0.0.1:6969");
         server.Start(socket => {
             socket.OnOpen = () => {
-                Console.WriteLine("Open!");
+                Console.WriteLine("new connection " + socket.ConnectionInfo.Id);
                 allSockets.Add(socket);
             };
             socket.OnClose = () => {
@@ -17,12 +17,13 @@ public class Program {
                 allSockets.Remove(socket);
             };
             socket.OnMessage = message => {
-                Console.WriteLine(message);
-                allSockets.ToList().ForEach(s => s.Send("Echo: " + message));
+                // Console.WriteLine(message);
+                // allSockets.ToList().ForEach(s => s.Send("Echo: " + message));
             };
             socket.OnBinary = binary => {
-                Console.WriteLine("Binary: " + binary.Length + " bytes");
-                Console.WriteLine(BitConverter.ToString(binary) + "...");
+                // Console.WriteLine("Binary: " + binary.Length + " bytes");
+                // Console.WriteLine(BitConverter.ToString(binary) + "...");
+                allSockets.ToList().ForEach(s => s.Send(binary));
             };
         });
 
