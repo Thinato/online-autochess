@@ -14,8 +14,8 @@ class Game:
     conn: Connection
 
     def __init__(self, config: Config, conn: Connection):
-        self.window = pg.display.set_mode((800, 600))
-        self.screen = pg.Surface((800, 600))
+        self.window = pg.display.set_mode((config.RESOLUTION))
+        self.screen = pg.Surface(config.RESOLUTION)
         self.config = config
         self.scenes = {}
         self.conn = conn
@@ -28,7 +28,7 @@ class Game:
 
     def start(self):
         self.playing = True
-        self.window = pg.display.set_mode((800, 600))
+        self.window = pg.display.set_mode(self.config.RESOLUTION)
         self.clock = pg.time.Clock()
         self.main_loop()
 

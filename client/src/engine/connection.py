@@ -11,7 +11,9 @@ class Connection:
         self.port = port
         try:
             self.ws = create_connection(f"ws://{host}:{port}")
-            return True
+            player_id = self.ws.recv()
+            print('player_id:', player_id.decode())
+            return True # player_id.decode() 
         except Exception as e:
             print(e)
             return False

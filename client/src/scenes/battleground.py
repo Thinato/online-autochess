@@ -20,11 +20,11 @@ class Battleground(BaseScene):
 
     def update(self, dt):
         mpos = pg.mouse.get_pos()
-
-        # message = self.ws.recv()
+        message = self.conn.receive()
 
         # if message:
-        #     print("msg:", message)
+        #     print("msg:", message.decode())
+
         if self.player_dir.magnitude() > 0:
             self.player_pos.xy += self.player_dir.normalize() * dt * 500
 
