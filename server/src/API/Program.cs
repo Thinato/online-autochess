@@ -52,7 +52,10 @@ public class Program {
                 // Broadcast the latest binary and text messages to all players
                 foreach (var socket in allSockets.ToList()) {
                     if (latestBinaryMessages.TryGetValue(socket.ConnectionInfo.Id, out var binaryData)) {
+                        // send them the other players positions
+                        
                         allSockets.ToList().ForEach(s => s.Send(binaryData));
+                        
                     }
 
                     if (latestTextMessages.TryGetValue(socket.ConnectionInfo.Id, out var textData)) {

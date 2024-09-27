@@ -20,7 +20,7 @@ class Battleground(BaseScene):
 
     def update(self, dt):
         mpos = pg.mouse.get_pos()
-        message = self.conn.receive()
+        # message = self.conn.receive()
 
         # if message:
         #     print("msg:", message.decode())
@@ -30,15 +30,7 @@ class Battleground(BaseScene):
 
         int_x = int(self.player_pos.x)
         int_y = int(self.player_pos.y)
-        self.conn.send(
-            [
-                1,
-                int_x // 256,
-                int_x % 256,
-                int_y // 256,
-                int_y % 256,
-            ]
-        )
+        self.conn.send_player_pos(int_x, int_y)
 
         for element in self.elements:
             element.check_hover(mpos)
@@ -62,17 +54,12 @@ class Battleground(BaseScene):
                     return SceneMessage.MAIN_MENU
                 case pg.K_w:
                     self.player_dir.y = -1
-                    # self.conn.send_binary([1, ])
-                    self.conn.send("w")
                 case pg.K_a:
                     self.player_dir.x -= 1
-                    self.conn.send("a")
                 case pg.K_s:
                     self.player_dir.y += 1
-                    self.conn.send("s")
                 case pg.K_d:
                     self.player_dir.x += 1
-                    self.conn.send("d")
         elif event.type == pg.KEYUP:
             match event.key:
                 case pg.K_w:

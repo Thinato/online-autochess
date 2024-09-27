@@ -1,4 +1,5 @@
 from websocket import WebSocket, create_connection
+from data.server_message import ServerMessage
 
 
 class Connection:
@@ -11,8 +12,8 @@ class Connection:
         self.port = port
         try:
             self.ws = create_connection(f"ws://{host}:{port}")
-            player_id = self.ws.recv()
-            print('player_id:', player_id.decode())
+            # player_id = self.ws.recv()
+            # print('player_id:', player_id.decode())
             return True # player_id.decode() 
         except Exception as e:
             print(e)
@@ -21,6 +22,11 @@ class Connection:
     def close(self) -> None:
         if self.ws:
             self.ws.close()
+    
+    def send_player_pos(self, x: int, y: int) -> None:
+        self.ws.send_binary(
+            bytes(ServerMessage.SEND_POSITION + [x // 256, x % 256, y // 256, y % 256])
+        )
 
     def send(self, data: bytes) -> None:
         self.ws.send_binary(data)
