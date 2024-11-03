@@ -30,7 +30,7 @@ class Battleground(BaseScene):
 
         int_x = int(self.player_pos.x)
         int_y = int(self.player_pos.y)
-        self.conn.send_player_pos(int_x, int_y)
+        self.conn.send_data(f'{int_x}:{int_y}')
 
         for element in self.elements:
             element.check_hover(mpos)
