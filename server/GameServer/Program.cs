@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using server.networking;
+using gameServer.networking;
 
 
 string ipAddress = "127.0.0.1"; // localhost
