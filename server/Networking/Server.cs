@@ -38,6 +38,7 @@ public class TcpServer<Client> {
     private async Task AcceptClientsAsync() {
         if (_listener == null) return;
         while (_isRunning) {
+            Console.WriteLine("accepting connections");
             try {
                 // Accept a new client
                 var client = await _listener.AcceptTcpClientAsync();

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\common\common.csproj" />
-    <ProjectReference Include="..\networking\networking.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Networking\Networking.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

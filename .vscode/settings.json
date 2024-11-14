@@ -9,10 +9,12 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
+    ".cache": true,
     "**/__pycache__": true,
     "**/.retool_types/**": true,
     "**/*tsconfig.json": true,
-    ".cache": true,
+    "**/bin": true,
+    "**/obj": true,
     "retool.config.json": true
   }
 }
