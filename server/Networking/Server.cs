@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -12,9 +13,11 @@ public class TcpServer<Client> {
     private readonly int _port;
     private bool _isRunning;
     private List<Client> _clients = new List<Client>();
+    private Mediator _mediator;
 
-    public TcpServer(int port) {
+    public TcpServer(Mediator mediator, int port) {
         _port = port;
+        _mediator = mediator;
     }
 
     public void Start() {
@@ -64,16 +67,21 @@ public class TcpServer<Client> {
                     // Read data from the client
                     int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
                     if (bytesRead == 0) {
+                        // TODO: remove client from client pool once we have it lol
                         Console.WriteLine("Client disconnected.");
                         break;
                     }
 
-                    // Convert binary data to ASCII
-                    string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    Console.WriteLine($"Received: {message}");
+                    // get first byte
+                    byte commandId = buffer[0];
 
-                    // Forward the message to a hypothetical MessageHandler class
-                    MessageHandler.HandleMessage(client, message);
+                    // Convert binary data to ASCII
+                    // string command = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+
+                    // Handle command
+                    var cmd = _mediator.GetCommand(commandId);
+                    _mediator.HandleCommand<ICommand>(client, cmd);
+
                 }
             }
             catch (Exception ex) {
