@@ -1,23 +1,26 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Networking.Packets;
 
 namespace Networking;
 
-public class TcpServer<Client> {
+public class TcpServer<Client> where Client : Networking.Client, new() {
     private TcpListener? _listener;
     private readonly int _port;
     private bool _isRunning;
     private List<Client> _clients = new List<Client>();
-    private Mediator _mediator;
+    private Func<TcpClient, Client> _clientFactory;
+    private readonly ClientManager<Client> _clientManager;
+    private readonly Mediator _mediator;
 
-    public TcpServer(Mediator mediator, int port) {
+    public TcpServer(Mediator mediator, int port, Func<TcpClient, Client> clientFactory) {
         _port = port;
         _mediator = mediator;
+        _clientFactory = clientFactory;
     }
 
     public void Start() {
@@ -34,6 +37,12 @@ public class TcpServer<Client> {
     public void Stop() {
         if (_listener == null) return;
         _isRunning = false;
+        foreach (var client in _clients) {
+            // save their data
+            // client.Save();
+            client.Disconnect();
+        }
+
         _listener.Stop();
         Console.WriteLine("Server stopped.");
     }
@@ -44,7 +53,9 @@ public class TcpServer<Client> {
             Console.WriteLine("accepting connections");
             try {
                 // Accept a new client
-                var client = await _listener.AcceptTcpClientAsync();
+                var tcpClient = await _listener.AcceptTcpClientAsync();
+                var client = _clientFactory(tcpClient);
+                // var client = _clientFactory(tcpClient);
                 Console.WriteLine("Client connected.");
 
                 // Handle client in a separate task
@@ -57,31 +68,30 @@ public class TcpServer<Client> {
         }
     }
 
-    private async Task HandleClientAsync(TcpClient client) {
+    private async Task HandleClientAsync(Client client) {
+        Console.WriteLine("Handling client...");
         using (client) {
-            var stream = client.GetStream();
-            var buffer = new byte[1024]; // Buffer size can be adjusted as needed
-
             try {
-                while (_isRunning && client.Connected) {
-                    // Read data from the client
+                var stream = client.GetStream;
+                var buffer = new byte[1024];
+                while (_isRunning && client.Connected && stream != null) {
                     int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
                     if (bytesRead == 0) {
-                        // TODO: remove client from client pool once we have it lol
                         Console.WriteLine("Client disconnected.");
                         break;
                     }
 
-                    // get first byte
-                    byte commandId = buffer[0];
+                    Console.WriteLine($"Received {bytesRead} bytes: {BitConverter.ToString(buffer, 0, bytesRead)}");
 
-                    // Convert binary data to ASCII
-                    // string command = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    // Assuming packet handling logic
+                    byte packetId = buffer[0];
+                    var packet = _mediator.GetPacket(packetId);
+                    if (packet == null) {
+                        Console.WriteLine($"Unknown packet ID: {packetId}");
+                        continue;
+                    }
 
-                    // Handle command
-                    var cmd = _mediator.GetCommand(commandId);
-                    _mediator.HandleCommand<ICommand>(client, cmd);
-
+                    _mediator.HandlePacket<Packet>(client, packet, buffer);
                 }
             }
             catch (Exception ex) {
@@ -92,5 +102,6 @@ public class TcpServer<Client> {
             }
         }
     }
+
 }
 
