@@ -3,7 +3,7 @@ using common;
 
 namespace Networking.Packets;
 
-public abstract class Packet {
+public interface IPacket {
 
     public static byte ID { get; }
 

@@ -5,19 +5,18 @@ using Server.Packets;
 
 namespace Server.Packets.ClientPackets;
 
-public class JoinQueuePacket : Packet {
+public class JoinQueuePacket : IPacket {
     public static new byte ID { get { return (byte)PacketID.JOIN_QUEUE; } }
 
-    public static Packet Create() {
-        System.Console.WriteLine("JoinQueuePacket created");
+    public static IPacket Create() {
         return new JoinQueuePacket();
     }
 
-    public override void Read(Client client, BReader reader) {
+    public void Read(Client client, BReader reader) {
         throw new NotImplementedException();
     }
 
-    public override int Write(Client client, BWriter writer) {
+    public int Write(Client client, BWriter writer) {
         throw new NotImplementedException();
     }
 }

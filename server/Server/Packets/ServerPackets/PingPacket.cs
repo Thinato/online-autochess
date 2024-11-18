@@ -4,18 +4,18 @@ using Networking.Packets;
 
 namespace Server.Packets.ServerPackets;
 
-public class PingPacket : Packet {
+public class PingPacket : IPacket {
     public static new byte ID { get { return (byte)PacketID.PING; } }
 
-    public static Packet Create() {
+    public static IPacket Create() {
         return new PingPacket();
     }
 
-    public override void Read(Client client, BReader reader) {
+    public void Read(Client client, BReader reader) {
         throw new NotImplementedException();
     }
 
-    public override int Write(Client client, BWriter writer) {
+    public int Write(Client client, BWriter writer) {
         throw new NotImplementedException();
     }
 }

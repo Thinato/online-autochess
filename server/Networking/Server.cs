@@ -55,7 +55,6 @@ public class TcpServer<Client> where Client : Networking.Client, new() {
                 // Accept a new client
                 var tcpClient = await _listener.AcceptTcpClientAsync();
                 var client = _clientFactory(tcpClient);
-                // var client = _clientFactory(tcpClient);
                 Console.WriteLine("Client connected.");
 
                 // Handle client in a separate task
@@ -69,7 +68,6 @@ public class TcpServer<Client> where Client : Networking.Client, new() {
     }
 
     private async Task HandleClientAsync(Client client) {
-        Console.WriteLine("Handling client...");
         using (client) {
             try {
                 var stream = client.GetStream;
@@ -85,13 +83,7 @@ public class TcpServer<Client> where Client : Networking.Client, new() {
 
                     // Assuming packet handling logic
                     byte packetId = buffer[0];
-                    var packet = _mediator.GetPacket(packetId);
-                    if (packet == null) {
-                        Console.WriteLine($"Unknown packet ID: {packetId}");
-                        continue;
-                    }
-
-                    _mediator.HandlePacket<Packet>(client, packet, buffer);
+                    _mediator.HandlePacket(client, packetId, buffer);
                 }
             }
             catch (Exception ex) {

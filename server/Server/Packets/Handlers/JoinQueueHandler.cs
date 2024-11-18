@@ -4,15 +4,21 @@ using Server.Packets.ClientPackets;
 
 namespace Server.Packets.Handlers;
 
-public class JoinQueueHandler : PacketHandler<JoinQueuePacket> {
-    public override byte ID {
+public class JoinQueueHandler : IPacketHandler<JoinQueuePacket> {
+    public byte ID {
         get {
             return (byte)PacketID.JOIN_QUEUE;
         }
     }
 
-    public override void HandlePacket(Client client, JoinQueuePacket packet) {
+    public Client Client { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    public void Handle(Client client, IPacket packet) {
+        HandlePacket(client, (JoinQueuePacket)packet);
+    }
+
+    public void HandlePacket(Client client, JoinQueuePacket packet) {
         Console.WriteLine("JoinQueuePacket handled");
-        throw new NotImplementedException();
+        Console.WriteLine("should not close the connection now:");
     }
 }
