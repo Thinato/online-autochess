@@ -4,44 +4,38 @@ using Networking;
 
 namespace Networking.Packets;
 
+struct PacketEntry {
+    internal Func<IPacket> packetFactory;
+    internal IPacketHandlerBase handler;
+}
+
 public class Mediator {
-    private readonly Dictionary<byte, IPacketHandlerBase> _handlers = new Dictionary<byte, IPacketHandlerBase>();
-    private readonly Dictionary<byte, Func<IPacket>> _packetFactory = new Dictionary<byte, Func<IPacket>>();
+    private readonly Dictionary<byte, PacketEntry> _handlers = new Dictionary<byte, PacketEntry>();
 
-    public void RegisterPacket(byte id, Func<IPacket> packetFactory) {
-        if (_packetFactory.ContainsKey(id)) {
-            throw new InvalidOperationException($"Command with id {id} already registered");
-        }
-
-        _packetFactory[id] = () => packetFactory();
-    }
-
-    public IPacket GetIPacket(byte id) {
-        if (!_packetFactory.ContainsKey(id)) {
-            throw new InvalidOperationException($"Command with id {id} not registered");
-        }
-
-        return _packetFactory[id]();
-    }
-
-    public void RegisterHandler<TPacket>(IPacketHandler<TPacket> handler) where TPacket : IPacket {
-        if (_handlers.ContainsKey(handler.ID)) {
+    public void RegisterHandler(byte id, Func<IPacket> packetFactory, IPacketHandlerBase handler) {
+        if (_handlers.ContainsKey(id)) {
             throw new InvalidOperationException($"Handler for {typeof(IPacket)} already registered");
         }
 
-        _handlers[handler.ID] = handler;
+        _handlers[handler.ID] = new PacketEntry {
+            packetFactory = packetFactory,
+            handler = handler
+        };
     }
 
-    public void HandlePacket(Client client, byte packetId, byte[] buffer) {
-        var packet = GetIPacket(packetId);
-
+    internal void HandlePacket(Client client, byte packetId, byte[] buffer) {
         if (!_handlers.TryGetValue(packetId, out var handlerObj)) {
-            throw new InvalidOperationException($"No handler registered for {packet}");
+            throw new InvalidOperationException($"No packet/handler registered for {packetId}");
         }
 
-        if (!(handlerObj is IPacketHandlerBase handler)) {
-            throw new InvalidOperationException($"Handler for {packet} is not of the correct type");
+        var packet = handlerObj.packetFactory();
+
+        if (!(handlerObj.handler is IPacketHandlerBase handler)) {
+            throw new InvalidOperationException($"Handler for {packetId} is not of the correct type");
         }
+
+        // start from the second byte, because the first byte is the packet ID
+        packet.Read(client, buffer);
 
         handler.Handle(client, packet);
     }

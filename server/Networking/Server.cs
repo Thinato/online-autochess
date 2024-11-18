@@ -83,6 +83,7 @@ public class TcpServer<Client> where Client : Networking.Client, new() {
 
                     // Assuming packet handling logic
                     byte packetId = buffer[0];
+
                     _mediator.HandlePacket(client, packetId, buffer);
                 }
             }

@@ -7,10 +7,11 @@ public interface IPacket {
 
     public static byte ID { get; }
 
-    public void Read(Client client, byte[] body, int offset, int len) {
+    public void Read(Client client, byte[] body) {
         // decrypt data
         // decrypt(body, offset, len);
-        Read(client, new BReader(new MemoryStream(body)));
+        // -1 for the id, once we have encryption this number might raise
+        Read(client, new BReader(new MemoryStream(body, 1, body.Length - 1)));
     }
 
     public int Write(Client client, byte[] buff, int offset) {

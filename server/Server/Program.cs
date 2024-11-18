@@ -10,8 +10,8 @@ try {
     int port = 6969;
     Mediator mediator = new Mediator();
 
-    mediator.RegisterPacket(JoinQueuePacket.ID, JoinQueuePacket.Create);
-    mediator.RegisterHandler<JoinQueuePacket>(new JoinQueueHandler());
+    // mediator.RegisterPacket(JoinQueuePacket.ID, JoinQueuePacket.Create);
+    mediator.RegisterHandler(JoinQueuePacket.ID, JoinQueuePacket.Create, new JoinQueueHandler());
 
     playerManager = new PlayerManager();
 

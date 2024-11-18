@@ -5,7 +5,7 @@ using Networking.Packets;
 namespace Server.Packets.ServerPackets;
 
 public class PingPacket : IPacket {
-    public static new byte ID { get { return (byte)PacketID.PING; } }
+    public static byte ID { get { return (byte)PacketID.PING; } }
 
     public static IPacket Create() {
         return new PingPacket();
