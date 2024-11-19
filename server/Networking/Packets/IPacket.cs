@@ -1,5 +1,5 @@
 using System.Net;
-using common;
+using server;
 
 namespace Networking.Packets;
 
