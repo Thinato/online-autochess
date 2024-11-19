@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace common;
+namespace server;
 
 public class BReader : BinaryReader {
     public BReader(Stream s) : base(s, Encoding.UTF8) {
