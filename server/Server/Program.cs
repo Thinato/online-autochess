@@ -1,5 +1,6 @@
 ﻿using Networking;
 using Networking.Packets;
+using Server.Queue;
 using Server.Packets.ClientPackets;
 using Server.Packets.Handlers;
 using Server.Player;
@@ -9,11 +10,12 @@ PlayerManager? playerManager = null;
 try {
     int port = 6969;
     Mediator mediator = new Mediator();
-
-    // mediator.RegisterPacket(JoinQueuePacket.ID, JoinQueuePacket.Create);
-    mediator.RegisterHandler(JoinQueuePacket.ID, JoinQueuePacket.Create, new JoinQueueHandler());
-
     playerManager = new PlayerManager();
+    QueueManager queueManager = new QueueManager();
+
+    var joinQueueHandler = new JoinQueueHandler(queueManager);
+    mediator.RegisterHandler(JoinQueuePacket.ID, JoinQueuePacket.Create, joinQueueHandler);
+
 
     var server = new TcpServer<PlayerEntity>(mediator, port, (tcpClient) => new PlayerEntity(tcpClient));
 

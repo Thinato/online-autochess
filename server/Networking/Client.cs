@@ -5,6 +5,8 @@ namespace Networking;
 public abstract class Client : IDisposable {
     protected TcpClient? Connection;
 
+    public Guid ID { get; } = Guid.NewGuid();
+
     public Client(TcpClient tcpClient) {
         Connection = tcpClient;
     }

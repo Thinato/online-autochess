@@ -30,6 +30,6 @@ public interface IPacket {
 
     public abstract void Read(Client client, BReader reader);
 
-    public abstract int Write(Client client, BWriter writer);
+    public abstract void Write(Client client, BWriter writer);
 
 }

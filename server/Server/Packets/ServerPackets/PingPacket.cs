@@ -16,7 +16,7 @@ public class PingPacket : IPacket {
         throw new NotImplementedException();
     }
 
-    public int Write(Client client, BWriter writer) {
+    void IPacket.Write(Client client, BWriter writer) {
         throw new NotImplementedException();
     }
 }

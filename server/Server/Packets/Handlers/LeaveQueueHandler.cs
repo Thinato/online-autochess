@@ -1,3 +1,4 @@
+
 using Networking;
 using Networking.Packets;
 using Server.Queue;
@@ -5,7 +6,7 @@ using Server.Packets.ClientPackets;
 
 namespace Server.Packets.Handlers;
 
-public class JoinQueueHandler : IPacketHandler<JoinQueuePacket> {
+public class LeaveQueueHandler : IPacketHandler<JoinQueuePacket> {
     public byte ID {
         get {
             return (byte)PacketID.JOIN_QUEUE;
@@ -14,7 +15,7 @@ public class JoinQueueHandler : IPacketHandler<JoinQueuePacket> {
 
     public QueueManager QueueManager { get; set; }
 
-    public JoinQueueHandler(QueueManager queueManager) {
+    public LeaveQueueHandler(QueueManager queueManager) {
         QueueManager = queueManager;
     }
 
@@ -25,9 +26,7 @@ public class JoinQueueHandler : IPacketHandler<JoinQueuePacket> {
     }
 
     public void HandlePacket(Client client, JoinQueuePacket packet) {
-        Console.WriteLine($"{client.ID} has joined queue");
-        QueueManager.EnqueuePlayer(client.ID);
-
-        var nextPlayer = QueueManager.GetNextPlayers();
+        Console.WriteLine($"{client.ID} has left queue");
+        QueueManager.DequeuePlayer(client.ID);
     }
 }

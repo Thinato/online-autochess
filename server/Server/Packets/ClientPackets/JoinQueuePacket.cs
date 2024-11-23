@@ -15,11 +15,8 @@ public class JoinQueuePacket : IPacket {
     }
 
     public void Read(Client client, BReader reader) {
-        QueueID = reader.ReadInt32();
-        Console.WriteLine($"JoinQueuePacket read, QueueID: {QueueID}");
     }
 
-    public int Write(Client client, BWriter writer) {
-        throw new NotImplementedException();
+    public void Write(Client client, BWriter writer) {
     }
 }
