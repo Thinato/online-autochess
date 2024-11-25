@@ -1,4 +1,3 @@
-using common;
 using Networking;
 using Networking.Packets;
 using server;
@@ -12,11 +11,7 @@ public class PingPacket : IPacket {
         return new PingPacket();
     }
 
-    public void Read(Client client, BReader reader) {
-        throw new NotImplementedException();
-    }
+    public void Read(Client client, BReader reader) { }
 
-    void IPacket.Write(Client client, BWriter writer) {
-        throw new NotImplementedException();
-    }
+    void IPacket.Write(Client client, BWriter writer) { }
 }

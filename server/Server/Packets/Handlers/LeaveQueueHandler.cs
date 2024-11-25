@@ -9,7 +9,7 @@ namespace Server.Packets.Handlers;
 public class LeaveQueueHandler : IPacketHandler<JoinQueuePacket> {
     public byte ID {
         get {
-            return (byte)PacketID.JOIN_QUEUE;
+            return (byte)PacketID.LEAVE_QUEUE;
         }
     }
 

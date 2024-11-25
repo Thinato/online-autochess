@@ -2,16 +2,11 @@
 namespace Server.Queue;
 
 public class QueueManager {
-    // Thread-safe collection to store the queue entities
-    private readonly List<QueueEntity> _queue;
+    private readonly List<QueueEntity> _queue = new List<QueueEntity>();
 
     public int Count => _queue.Count;
 
     private int _maxPlayers = 2;
-
-    public QueueManager() {
-        _queue = new List<QueueEntity>();
-    }
 
     // Adds a new player to the queue
     public void EnqueuePlayer(Guid playerId, int priority = 0) {

@@ -29,5 +29,14 @@ public class JoinQueueHandler : IPacketHandler<JoinQueuePacket> {
         QueueManager.EnqueuePlayer(client.ID);
 
         var nextPlayer = QueueManager.GetNextPlayers();
+
+        if (nextPlayer != null) {
+            Console.WriteLine($"Match found for {client.ID} yet");
+            return;
+        }
+
+        Console.WriteLine($"Match found for {client.ID}");
+
+
     }
 }
