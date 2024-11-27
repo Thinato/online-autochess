@@ -8,9 +8,7 @@ using Server.Logic.Game;
 
 PlayerManager? playerManager = null;
 
-IEnumerable<GameEntity> gameList = new List<GameEntity> {
-    new GameEntity("Local", "127.0.0.1:7070")
-};
+
 
 try {
     int port = 6969;
@@ -24,11 +22,6 @@ try {
 
     mediator.RegisterHandler(JoinQueuePacket.ID, JoinQueuePacket.Create, joinQueueHandler);
     mediator.RegisterHandler(LeaveQueuePacket.ID, LeaveQueuePacket.Create, leaveQueueHandler);
-
-    foreach (var game in gameList) {
-        gameManager.AddGame(game);
-    }
-
 
     var server = new TcpServer<PlayerEntity>(mediator, port, (tcpClient) => new PlayerEntity(tcpClient));
 

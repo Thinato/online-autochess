@@ -6,7 +6,7 @@ using Server.Packets;
 namespace Server.Packets.ClientPackets;
 
 public class LeaveQueuePacket : IPacket {
-    public static byte ID { get { return (byte)PacketID.JOIN_QUEUE; } }
+    public static byte ID { get { return (byte)PacketID.LEAVE_QUEUE; } }
 
     public int QueueID { get; set; }
 

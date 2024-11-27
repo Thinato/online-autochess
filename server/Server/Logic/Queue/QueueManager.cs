@@ -12,7 +12,9 @@ public class QueueManager {
     public void EnqueuePlayer(Guid playerId, int priority = 0) {
         var queueEntity = new QueueEntity(playerId, priority);
         _queue.Add(queueEntity);
+        Console.ForegroundColor = ConsoleColor.Magenta;
         Console.WriteLine($"Player {playerId} added to the queue with priority {priority}.");
+        Console.ForegroundColor = ConsoleColor.White;
     }
 
     // Removes and returns the next player in the queue
@@ -21,7 +23,9 @@ public class QueueManager {
 
         if (queueEntity != null) {
             _queue.Remove(queueEntity);
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine($"Player {playerId} removed from the queue.");
+            Console.ForegroundColor = ConsoleColor.White;
             return queueEntity;
         }
 

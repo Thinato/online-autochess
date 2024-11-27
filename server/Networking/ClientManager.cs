@@ -18,21 +18,6 @@ public abstract class ClientManager<TClient> where TClient : Client {
         return _clients.Values.ToList();
     }
 
-    // Adds a new player to the manager
-    // public bool AddPlayer() {
-    //     if (_clients.ContainsKey(clientId)) {
-    //         Console.WriteLine($"Player with ID {playerId} already exists.");
-    //         return false;
-    //     }
-
-    //     // var player = new PlayerEntity(tcpClient, playerId, nickname);
-    //     bool added = _clients.TryAdd(playerId, player);
-
-    //     if (added) {
-    //         Console.WriteLine($"Player {playerId} added successfully.");
-    //     }
-    //     return added;
-    // }
 
     // Removes a player by their ID
     public bool RemovePlayer(string clientId) {

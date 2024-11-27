@@ -25,18 +25,25 @@ public class JoinQueueHandler : IPacketHandler<JoinQueuePacket> {
     }
 
     public void HandlePacket(Client client, JoinQueuePacket packet) {
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"{client.ID} has joined queue");
+        Console.ForegroundColor = ConsoleColor.White;
         QueueManager.EnqueuePlayer(client.ID);
 
-        var nextPlayer = QueueManager.GetNextPlayers();
+        var nextPlayers = QueueManager.GetNextPlayers();
 
-        if (nextPlayer != null) {
-            Console.WriteLine($"Match found for {client.ID} yet");
+        if (nextPlayers == null) {
+            Console.WriteLine($"No match for {client.ID} yet");
             return;
         }
 
-        Console.WriteLine($"Match found for {client.ID}");
+        var nextPlayersList = nextPlayers.ToList();
 
-
+        foreach (var player in nextPlayersList) {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Match found for {player.PlayerId}");
+            Console.ForegroundColor = ConsoleColor.White;
+            QueueManager.DequeuePlayer(player.PlayerId);
+        }
     }
 }
