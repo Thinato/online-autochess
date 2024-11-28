@@ -9,6 +9,16 @@ This project was built for the course of Software Engineering at the UniSenai. T
 
 ## Setup Guide
 
+```
+dotnet run --project server/Server/Server.csproj
+```
+
+recommended client to test the server:
+
+```
+git clone https://github.com/Thinato/SocketClient.git
+```
+
 ### Prerequisites
 
 - dotnet-host >= 8.0
