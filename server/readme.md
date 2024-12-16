@@ -11,3 +11,5 @@ o que o servidor vai enviar:
 - mensagem
   - tipo do evento
   - ...dados do evento
+
+
